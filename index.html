@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="T4WaJ5yaHnj7Vz8K7M2wxZ">
+<head data-page-node-id="pXsii2UoPacakWZtFNG0nA">
+<meta charset="UTF-8" data-page-node-id="C4Z1SAIsblZqsXa9dHsmTr">
+<meta name="viewport" content="width=device-width,initial-scale=1" data-page-node-id="4GraHetPvLwxQSFbiotarj">
+<title>声音的传播 · 虚拟实验（教科版2024新版四年级上册）</title>
+<style>
+:root{
+  --bg:#F4F9FF; --card:#fff; --line:#DCE8F7; --text:#1B2559; --sub:#5B6B95;
+  --air:#1C7ED6; --water:#0CA678; --solid:#F08C00; --vac:#E03131;
+  --purple:#7C5CFF; --pink:#FF5A8A;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:system-ui,-apple-system,"Microsoft YaHei",sans-serif;
+  color:var(--text);font-size:14px;line-height:1.6;
+  background:
+    radial-gradient(900px 520px at 0% -10%, #E3F2FF 0%, rgba(227,242,255,0) 60%),
+    radial-gradient(820px 480px at 100% 0%, #FFF3E0 0%, rgba(255,243,224,0) 55%),
+    radial-gradient(760px 520px at 50% 115%, #E6FFF6 0%, rgba(230,255,246,0) 60%),
+    #F7FBFF;
+  min-height:100vh;
+}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 16px 40px}
+header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+h1{font-size:22px;font-weight:800;letter-spacing:.5px;margin:0;
+  background:linear-gradient(92deg,#1C7ED6 0%,#0CA678 52%,#F08C00 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+h1::before{content:'';display:inline-block;width:11px;height:11px;border-radius:50%;
+  background:linear-gradient(135deg,#1C7ED6,#0CA678);margin-right:10px;vertical-align:middle;
+  box-shadow:0 0 0 4px rgba(28,126,214,.12)}
+.sub{font-size:12px;color:var(--sub);font-weight:500}
+.card{background:var(--card);border:1.5px solid #E4EEFB;border-radius:18px;padding:15px;margin-bottom:15px;
+  box-shadow:0 8px 26px rgba(28,126,214,.07)}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:15px}
+@media(max-width:940px){.layout{grid-template-columns:1fr}}
+canvas{width:100%;height:560px;display:block;background:#fff;border:2px solid #E2EDFB;border-radius:14px;
+  box-shadow:0 6px 22px rgba(28,126,214,.08)}
+:fullscreen canvas{height:calc(100vh - 8px);border:none;border-radius:0}
+:fullscreen .wrap{padding:8px 8px 12px;max-width:100%}
+:fullscreen .layout{grid-template-columns:1fr 260px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{padding:7px 14px;border:1.5px solid #DDE9F8;background:#fff;border-radius:10px;cursor:pointer;
+  font-size:13px;color:var(--text);font-weight:500;transition:.15s}
+.btn:hover{border-color:#9CC4F0;background:#F7FBFF;transform:translateY(-1px)}
+.btn.on{color:#fff;border-color:transparent;background:linear-gradient(135deg,#5B9BFF,#1C7ED6);
+  box-shadow:0 3px 10px rgba(28,126,214,.26)}
+[data-medium="air"].on{background:linear-gradient(135deg,#5AA9F0,#1C7ED6);box-shadow:0 3px 10px rgba(28,126,214,.28)}
+[data-medium="water"].on{background:linear-gradient(135deg,#35D3A4,#0CA678);box-shadow:0 3px 10px rgba(12,166,120,.28)}
+[data-medium="solid"].on{background:linear-gradient(135deg,#FFB84D,#F08C00);box-shadow:0 3px 10px rgba(240,140,0,.28)}
+[data-medium="vacuum"].on{background:linear-gradient(135deg,#FF7A7A,#E03131);box-shadow:0 3px 10px rgba(224,49,49,.28)}
+#btnRun.on{background:linear-gradient(135deg,#35D3A4,#0CA678);box-shadow:0 3px 10px rgba(12,166,120,.28)}
+#btnSlow.on{background:linear-gradient(135deg,#A78BFA,#7C5CFF);box-shadow:0 3px 10px rgba(124,92,255,.28)}
+#btnReplay{border-color:#B9E8DA;color:#0A8F6A;background:#F3FFFB}
+#btnReplay:hover{background:#E8FFF8;border-color:#7ED9C2}
+#btnFs{border-color:#E2D6FF;color:#6B48F5;background:#F8F5FF}
+#btnFs:hover{background:#F1EBFF;border-color:#C4B0FF}
+#btnSound.on{background:linear-gradient(135deg,#FFB84D,#F08C00);box-shadow:0 3px 10px rgba(240,140,0,.28)}
+[data-listen].on{background:linear-gradient(135deg,#A78BFA,#7C5CFF);box-shadow:0 3px 10px rgba(124,92,255,.28)}
+#btnLog{background:linear-gradient(135deg,#4C86FF,#1C7ED6);border-color:transparent;color:#fff;font-weight:600;
+  box-shadow:0 3px 10px rgba(28,126,214,.24)}
+#btnLog:hover{background:linear-gradient(135deg,#3B78FF,#1569BC)}
+#btnClear{border-color:#FFD9D0;color:#D9480F;background:#FFF8F5}
+#btnClear:hover{background:#FFF0EA;border-color:#FFB59E}
+.grp{margin-bottom:14px}
+.grp h3{font-size:13px;font-weight:800;margin:0 0 9px;color:#3F5C8C;letter-spacing:.4px}
+label.chk{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:7px;cursor:pointer;color:#3F5C8C}
+label.chk input{accent-color:#1C7ED6;width:16px;height:16px}
+.readout{background:linear-gradient(135deg,#F2F8FF,#F0FFFA);border:1.5px solid #E4F0FC;border-radius:12px;
+  padding:11px 13px;font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px;overflow:hidden;border-radius:10px}
+th,td{border-bottom:1px solid #EDF3FB;padding:7px 9px;text-align:left}
+th{font-weight:700;font-size:12.5px}
+th:nth-child(1){background:#EAF4FF;color:#1C7ED6}
+th:nth-child(2){background:#E8FBF4;color:#0A8F6A}
+th:nth-child(3){background:#FFF6E6;color:#C46A00}
+tbody tr:nth-child(even) td{background:#FBFDFF}
+.tips{font-size:13px;color:var(--sub);line-height:1.85}
+.tips b{font-weight:700}
+.tips b:nth-of-type(1){color:#1C7ED6}
+.tips b:nth-of-type(2){color:#0CA678}
+.tips b:nth-of-type(3){color:#E07A00}
+.tips ol{margin:6px 0 0 18px;padding:0}
+.tag{display:inline-block;padding:2px 8px;border-radius:7px;font-size:12px;color:#fff;font-weight:600;
+  box-shadow:0 2px 6px rgba(27,37,89,.14)}
+.layout > .card:nth-child(3) .grp{padding:11px;border-radius:12px;background:#F8FBFF;border:1px solid #EDF3FB}
+</style>
+</head>
+<body data-page-node-id="HzsxKwCWZ5jUm59O55ymbr">
+<div id="btnExitFs" style="display:none;position:fixed;top:14px;left:14px;z-index:2147483647;background:#DC2626;color:#fff;border:1px solid #DC2626;border-radius:8px;font-size:15px;font-weight:600;padding:10px 20px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.18);user-select:none">退出全屏</div>
+<div class="wrap" data-page-node-id="oZBsxUxb4AzxJHjhOHCgPr">
+<header data-page-node-id="qbpPAU0Bvpoqu0qYCFBA8l">
+  <h1 data-page-node-id="Qjea1TwRNuUHFDEhiubakc">声音的传播 · 虚拟实验</h1>
+  <span class="sub" data-page-node-id="7FaWJEbOvM5jbNpmRSQbGn">教科版（2024新版）四年级上册 · 声音单元</span>
+</header>
+
+<div class="layout" data-page-node-id="hM4kxaCqXcCphAZcuafRjY">
+  <div class="card" style="margin:0" data-page-node-id="TZkTausPVud72xQhdWLi6H">
+    <canvas id="stage" width="698" height="560" data-page-node-id="LElmpa7egenHYZJ2aT5bWY"></canvas>
+  </div>
+
+  <div class="card" style="margin:0" data-page-node-id="KrCTF0UA421aQeNPRi1JnE">
+    <div class="grp" data-page-node-id="gFnQ5myZLyORKnbnsRDWxR">
+      <h3 data-page-node-id="OiFjK8Il6cOIqhjPbb5VdD">观察方式</h3>
+      <div class="row" data-page-node-id="uCaSeBS6wa4YvrCFSe13zj">
+        <div class="btn on" data-view="compare" data-page-node-id="SxSwSQDQYzWBfLjnWNyJbO">三物质同时对比</div>
+        <div class="btn" data-view="single" data-page-node-id="PflEettqCOiPQAmBmQ6JqN">单独观察</div>
+      </div>
+    </div>
+    <div class="grp" id="singlePick" style="display:none" data-page-node-id="58SJA7TzitjDs7Tht75Mfs">
+      <h3 data-page-node-id="cEAG4FBtuTWWBzRAojmEEX">选择传播物质</h3>
+      <div class="row" data-page-node-id="Svy9LHH4Y54i4XFdHMxM9x">
+        <div class="btn on" data-medium="air" data-page-node-id="TUhFInEVBPLnFWq54koAeF">空气</div>
+        <div class="btn" data-medium="water" data-page-node-id="QXPHy9Ibz0GfzrOad669Vr">水</div>
+        <div class="btn" data-medium="solid" data-page-node-id="eBkqML6o8BQKgdnCfbyhFD">固体</div>
+        <div class="btn" data-medium="vacuum" data-page-node-id="vBP2BDpvXmUA3cHKQFGPk1">真空</div>
+      </div>
+    </div>
+    <div class="grp" data-page-node-id="xlsAXjxRQ2aAztA8r5qOZs">
+      <h3 data-page-node-id="eVyYRALESTBKd0M7Q0jb4q">播放控制</h3>
+      <div class="row" data-page-node-id="bCeZdCtXYrZ8pgtCFdHXZb">
+        <div class="btn" id="btnReplay" data-page-node-id="6FM4EO9gYNH5NTA8xCH6eW">重新发声</div>
+        <div class="btn on" id="btnRun" data-page-node-id="eYZOmVHfaIb5X4d9JsR5Kk">暂停</div>
+        <div class="btn" id="btnSlow" data-page-node-id="OcG8MaWgB4HsgLIoVYmyfA">慢放</div>
+        <div class="btn" id="btnFs" data-page-node-id="7hMp0xcEPAo1ef6grPqqze">全屏</div>
+        
+      </div>
+    </div>
+    <div class="grp" data-page-node-id="fRTWFdEmcbIN3E5hth19jY">
+      <label class="chk" data-page-node-id="Woliyv5LuMmoJGpyeHKMdZ"><input type="checkbox" id="chkDots" checked data-page-node-id="BPMtYghZU1mgb8MiKQhbao"> 显示物质微粒</label>
+      <label class="chk" data-page-node-id="Sf3PeFEK1vePRJufpTtFFK"><input type="checkbox" id="chkArrow" data-page-node-id="2A9xO2Aa0VovUC15WhgTCM"> 四面八方（标出各个方向）</label>
+    </div>
+    <div class="readout" id="out1" data-page-node-id="BsURHAxYJtMMHWDSjUdsw5"></div>
+  </div>
+
+  <div class="card" style="margin:0" data-page-node-id="0CNBfV0wJ9KJDWaQ0V9aBy">
+    <div class="grp" data-page-node-id="HlzXu9wznoddD7JciTKsbP">
+      <h3 data-page-node-id="SmwSKFWEoUsqRFdGtNYqgb">听一听（音量随传声效果变化）</h3>
+      <div class="row" data-page-node-id="PywTVVC5OdAb0TECkJRRSl">
+        <div class="btn" id="btnSound" data-page-node-id="AsHiivNwPlF76ZTyMbtpSH">开启声音</div>
+        <span class="sub" data-page-node-id="w5C8GC6tEugLxO1I10vKfN">浏览器需先点击一次才允许发声</span>
+      </div>
+      <div id="listenBox" style="display:none" data-page-node-id="BjKf2NRfS44zBwAIije0RJ">
+        <div class="tips" style="margin-top:10px" data-page-node-id="tpxtIQVI3DJuXyPq9kHOnf">点击按钮，听一听声音通过该物质传到耳朵时的大小</div>
+        <div class="row" style="margin-top:6px" data-page-node-id="zSGFUlKdQ0oCCRiyZwp1Jo">
+          <div class="btn" data-listen="air" data-page-node-id="SlqmYc6hHPu5JsipPL04to">听空气</div>
+          <div class="btn" data-listen="water" data-page-node-id="SiRxU50rPPj7HliSt88rN4">听水</div>
+          <div class="btn" data-listen="solid" data-page-node-id="clNAtF2mNfnl3nPN5QFP7E">听固体</div>
+          <div class="btn" data-listen="vacuum" data-page-node-id="LAI0eUz71BSHO6sye0IyiI">听真空</div>
+        </div>
+      </div>
+      <label class="chk" style="margin-top:8px" data-page-node-id="k3KJSrVoJF1c8ZfMVA0FO4"><input type="checkbox" id="chkBoost" data-page-node-id="NTN6QciiAxDuMtThvdQpn9"> 放大响度差异（便于听辨）</label>
+    </div>
+    <div class="grp" style="margin-bottom:0" data-page-node-id="7fWuhtnNy8P4kjjsQF8I7o">
+      <h3 data-page-node-id="rZUbGtVFzPSn4XBAy2pMEH">观察记录单</h3>
+      <div class="row" data-page-node-id="RrxXMTgejMmxCo4uVDhDks">
+        <div class="btn" id="btnLog" data-page-node-id="QYa7g3NIXWM4EoGjXMavkw">记录当前现象</div>
+        <div class="btn" id="btnClear" data-page-node-id="bETxZmDBwIrmYxigRhaAfI">清空</div>
+      </div>
+      <table style="margin-top:10px" data-page-node-id="3FZsPqgwBdQSga1Rl70xN0">
+        <thead data-page-node-id="nWZvMlatnH4inDlcbQr0Zr"><tr data-page-node-id="AncCDrbgtMFYQOJHDIB3Ua"><th data-page-node-id="xDI6Z4sGOKFUBYanq6GMD7">传播物质</th><th data-page-node-id="uXCIDSp8s2tOaV1dXYUeG7">能听到吗</th><th data-page-node-id="ewVPo0D3Nn90TB3rTUrHcA">听到的声音</th></tr></thead>
+        <tbody id="logBody" data-page-node-id="49OaYpHXQcChS6Xw1Yhkdi"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="card" data-page-node-id="9TmygvgEMkqTManumKwoR4">
+  <div class="tips" data-page-node-id="Hio1YUonpGPkZ2YzjH4TqL">
+    <b data-page-node-id="TXGWyGd8NVv0acxTiVytAT">聚焦问题：</b>敲鼓时鼓面振动发出鼓声，声音是怎样从一个地方传到另一个地方的？<br data-page-node-id="i0MA7Bzu4xkblECskwzli1">
+    <b data-page-node-id="87WZ54xIAqFPefe3pCXQBI">研讨问题：</b>①声音传播借助了什么物质？②在不同物质中传播有什么不同？③声音传播的方向是怎样的？我们是怎么知道的？④宇航员在太空为什么要用电子通信设备通话？<br data-page-node-id="cNoAMx0p5QYiQqnYCMpNEq">
+    <b data-page-node-id="hHgewVD9sWUjWKRT5jbAv8">操作建议：</b>先用"三物质同时对比"，看传到耳朵时的清楚程度有什么不同；再切"单独观察"，勾上"四面八方"，看声音是不是真的往各个方向都传了出去。
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+var cvs=document.getElementById('stage'), ctx=cvs.getContext('2d');
+var W=900,H=560,dpr=1;
+
+var FREQ=5;
+var MEDIA={
+  air:   {name:'空气（气体）', v:170, amp:7.5, k:0.80, k2:1.30, sp:24, rgb:'28,126,214',  dot:2.6, note:'音量较小'},
+  water: {name:'水（液体）',   v:380, amp:9,   k:0.39, k2:0.45, sp:17, rgb:'12,166,120',  dot:3.0, note:'比空气更清楚，音量较大'},
+  solid: {name:'固体（桌面）', v:640, amp:10.5,k:0.13, k2:0.05, sp:13, rgb:'240,140,0',   dot:3.4, note:'传声最清楚，音量最大'},
+  vacuum:{name:'真空',         v:0,   amp:0,   k:0,    k2:0,    sp:0,  rgb:'224,49,49',   dot:0,   note:'没有物质，声音无法传播'}
+};
+
+var S={view:'compare',single:'air',running:true,slow:false,t:0,dots:true,arrow:false,
+       sound:false,listen:null,boost:false};
+
+function attOf(k){ var m=MEDIA[k]; return S.boost? m.k2 : m.k; }
+function levelOf(k){
+  var m=MEDIA[k];
+  if(m.v===0) return 0;
+  return 100*Math.exp(-attOf(k));
+}
+function levelAt(k,d,dEar){
+  var m=MEDIA[k];
+  if(m.v===0||dEar<=0) return 0;
+  return 100*Math.exp(-attOf(k)*d/dEar);
+}
+
+var parts=[], rows=[];
+
+function fit(){
+  var r=cvs.getBoundingClientRect();
+  dpr=window.devicePixelRatio||1;
+  cvs.width=Math.round(r.width*dpr); cvs.height=Math.round(r.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  W=r.width; H=r.height;
+  buildParts();
+}
+
+function buildParts(){
+  parts=[]; rows=[];
+  var keys=(S.view==='compare')?['air','water','solid']:[S.single];
+  var n=keys.length, pad=10, gap=8;
+  var rowH=(H-pad*2-gap*(n-1))/n;
+  for(var i=0;i<n;i++){
+    var y0=pad+i*(rowH+gap), y1=y0+rowH;
+    var cx=Math.round(W*0.5), cy=Math.round((y0+y1)/2);
+    var earX=W-52;
+    rows.push({k:keys[i], y0:y0, y1:y1, cx:cx, cy:cy, earX:earX, dEar:earX-cx});
+    var m=MEDIA[keys[i]];
+    if(!m.sp) continue;
+    for(var y=y0+8;y<y1-8;y+=m.sp){
+      for(var x=44;x<W-44;x+=m.sp){
+        parts.push({x:x,y:y,k:keys[i],cx:cx,cy:cy});
+      }
+    }
+  }
+}
+
+function loudText(v){
+  if(v<=0.5) return '完全听不到';
+  if(v<10)  return '几乎听不见';
+  if(v<30)  return '很微弱';
+  if(v<55)  return '较弱';
+  if(v<75)  return '较清晰';
+  return '响亮清晰';
+}
+
+/* ---------- 声音 ---------- */
+var A={ctx:null,master:null,nodes:[],type:null};
+function audioInit(){
+  if(A.ctx){ if(A.ctx.state==='suspended') A.ctx.resume(); return; }
+  var C=window.AudioContext||window.webkitAudioContext;
+  if(!C) return;
+  A.ctx=new C();
+  A.master=A.ctx.createGain(); A.master.gain.value=0;
+  A.master.connect(A.ctx.destination);
+  var g=A.ctx.createGain(); g.gain.value=0.7; g.connect(A.master); A.tone=g;
+  var fs=[880,1760], vs=[0.85,0.16];
+  for(var i=0;i<fs.length;i++){
+    var o=A.ctx.createOscillator(); o.type='sine'; o.frequency.value=fs[i];
+    var og=A.ctx.createGain(); og.gain.value=vs[i];
+    o.connect(og); og.connect(g); o.start(); A.nodes.push(o);
+  }
+  A.type='fork';
+}
+function setVol(p){
+  if(!A.ctx) return;
+  var lv=Math.max(0,Math.min(100,p));
+  var amp=Math.pow(lv/100,1.6)*0.5;
+  if(lv<1) amp=0;
+  var t=A.ctx.currentTime;
+  try{ A.master.gain.setTargetAtTime(amp,t,0.05); }catch(e){ A.master.gain.value=amp; }
+}
+function audioTick(){
+  if(!A.ctx) return;
+  if(!S.sound){ setVol(0); return; }
+  if(S.listen) setVol(levelOf(S.listen)); else setVol(0);
+}
+
+/* ---------- 图形 ---------- */
+function drawFork(x,y,ph,accent){
+  var w=Math.abs(Math.sin(ph));
+  ctx.save(); ctx.translate(x,y);
+  if(accent){
+    var glow=ctx.createRadialGradient(0,-14,2,0,-14,48+16*w);
+    glow.addColorStop(0,'rgba('+accent+','+(0.16+0.15*w)+')');
+    glow.addColorStop(1,'rgba('+accent+',0)');
+    ctx.fillStyle=glow;
+    ctx.beginPath(); ctx.arc(0,-14,48+16*w,0,6.283); ctx.fill();
+  }
+  var d=Math.sin(ph)*3.2;
+  ctx.strokeStyle='#3B4560'; ctx.lineWidth=3.2; ctx.lineCap='round';
+  ctx.beginPath();
+  ctx.moveTo(0,12); ctx.lineTo(0,-12);
+  ctx.moveTo(-9,-12); ctx.lineTo(-9+d,-40);
+  ctx.moveTo(9,-12);  ctx.lineTo(9-d,-40);
+  ctx.moveTo(0,12);   ctx.lineTo(0,36);
+  ctx.stroke();
+  ctx.strokeStyle='rgba('+(accent||'59,69,96')+','+(0.20+0.36*w)+')'; ctx.lineWidth=2.2;
+  ctx.beginPath(); ctx.arc(0,-26,16+10*w,0,6.283); ctx.stroke();
+  ctx.restore();
+}
+
+function drawEar(x,y,level,scale){
+  var s=scale||1;
+  ctx.save(); ctx.translate(x,y); ctx.scale(s,s);
+  ctx.strokeStyle='#3E4A6B'; ctx.lineWidth=2.2; ctx.fillStyle='#FFF4EA';
+  ctx.beginPath();
+  ctx.moveTo(0,-22);
+  ctx.bezierCurveTo(16,-30,22,-12,16,2);
+  ctx.bezierCurveTo(22,14,10,22,0,16);
+  ctx.bezierCurveTo(-4,8,-4,0,0,-8);
+  ctx.stroke(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(2,-6); ctx.quadraticCurveTo(12,0,4,8); ctx.stroke();
+  ctx.restore();
+  if(s>0.85) meter(x+26,y-9,10,60,level);
+}
+
+function meter(x,y,w,h,level){
+  ctx.fillStyle='#E9EFF9'; ctx.fillRect(x,y,w,h);
+  var hh=h*Math.max(0,Math.min(1,level/100));
+  ctx.fillStyle= level>55?'#1D9E75' : (level>25?'#BA7517':'#A32D2D');
+  ctx.fillRect(x,y+(h-hh),w,hh);
+  ctx.strokeStyle='#C9D5EA'; ctx.lineWidth=1;
+  ctx.strokeRect(x+0.5,y+0.5,w-1,h-1);
+}
+
+function drawRing(cx,cy,r,rgb,alpha){
+  ctx.save();
+  ctx.strokeStyle='rgba('+rgb+','+alpha+')'; ctx.lineWidth=2.2;
+  ctx.shadowColor='rgba('+rgb+','+Math.min(0.7,alpha*1.7)+')';
+  ctx.shadowBlur=6;
+  ctx.beginPath(); ctx.arc(cx,cy,r,0,6.283); ctx.stroke();
+  ctx.restore();
+}
+
+function drawRow(row){
+  var m=MEDIA[row.k], cx=row.cx, cy=row.cy;
+  var lam = m.v? m.v/FREQ : 1;
+  var R = m.v*S.t;
+  var dEar = row.dEar;
+
+  // 本行的底与框
+  ctx.fillStyle='rgba('+m.rgb+',0.055)';
+  ctx.fillRect(40,row.y0,W-80,row.y1-row.y0);
+  ctx.fillStyle='rgba('+m.rgb+',0.78)';
+  ctx.fillRect(40,row.y0,4,row.y1-row.y0);
+
+  ctx.save();
+  ctx.beginPath(); ctx.rect(40,row.y0,W-80,row.y1-row.y0); ctx.clip();
+
+  // 物质微粒：被声波推着，朝离开声源的方向来回动
+  if(S.dots && m.sp){
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i]; if(p.k!==row.k) continue;
+      var dx=p.x-p.cx, dy=p.y-p.cy, d=Math.sqrt(dx*dx+dy*dy);
+      var px=p.x, py=p.y, size=m.dot;
+      if(d<=R && m.v>0){
+        var env=Math.exp(-attOf(row.k)*d/dEar);
+        var disp=m.amp*env*Math.sin(6.2832*(FREQ*S.t - d/lam));
+        var ux=d>0?dx/d:0, uy=d>0?dy/d:0;
+        px+=ux*disp; py+=uy*disp;
+        size=m.dot*(1+0.5*(disp/(m.amp+0.001)));
+      }
+      ctx.fillStyle='rgba('+m.rgb+',0.72)';
+      ctx.beginPath(); ctx.arc(px,py,size/2,0,6.283); ctx.fill();
+    }
+  }
+
+  // 声波：一圈一圈向四面八方扩出去
+  if(m.v>0 && S.t>0){
+    for(var w=0;w<4;w++){
+      var rr=R-w*lam*0.5;
+      if(rr>4 && rr<W+H) drawRing(cx,cy,rr,m.rgb,Math.max(0,0.34-w*0.07));
+    }
+  }
+
+  // 四面八方的方向箭头
+  if(S.arrow && m.v>0){
+    var ar=Math.min(R, Math.min(W,H));
+    for(var a=0;a<8;a++){
+      var ang=a*0.7854;
+      var ex=cx+Math.cos(ang)*ar, ey=cy+Math.sin(ang)*ar;
+      ctx.strokeStyle='rgba('+m.rgb+',0.55)'; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx+Math.cos(ang)*(ar-26), cy+Math.sin(ang)*(ar-26));
+      ctx.lineTo(ex,ey); ctx.stroke();
+      ctx.beginPath(); ctx.arc(ex,ey,3,0,6.283);
+      ctx.fillStyle='rgba('+m.rgb+',0.7)'; ctx.fill();
+    }
+  }
+
+  if(m.v===0){
+    ctx.fillStyle='rgba(163,45,45,0.85)';
+    ctx.font='13px system-ui'; ctx.textAlign='center';
+    ctx.fillText('没有任何物质微粒 —— 声音传不出去', cx, cy-46);
+    ctx.fillStyle='rgba(163,45,45,0.6)';
+    ctx.fillText('（真空）', cx, cy-26);
+  }
+
+  ctx.restore();
+
+  // 声源在正中
+  drawFork(cx, cy, 6.2832*FREQ*S.t, m.rgb);
+
+  // 耳朵
+  var level=levelOf(row.k);
+  var arrived = m.v>0 && R>=dEar;
+  drawEar(row.earX, cy, arrived?level:0);
+
+  // 四周各放一只耳朵，看是不是每个方向都听得见
+  if(S.arrow && S.view==='single' && m.v>0){
+    var maxR=Math.min(W,H)/2-46;
+    var r4=Math.min(R,maxR);
+    if(r4>52){
+      var dirs=[[1,0],[-1,0],[0,-1],[0,1]];
+      for(var q=0;q<4;q++){
+        var ex2=cx+dirs[q][0]*r4, ey2=cy+dirs[q][1]*r4;
+        drawEar(ex2,ey2,levelAt(row.k,r4,dEar),0.62);
+      }
+      ctx.textAlign='center'; ctx.fillStyle='#5B6B95'; ctx.font='12px system-ui';
+      ctx.fillText('四个方向都听得见 —— 声音是往四面八方传的', cx, row.y1-14);
+    }
+  }
+
+  // 名称与状态
+  ctx.textAlign='left';
+  ctx.fillStyle=m.v===0?'#E03131':'#1B2559';
+  ctx.font='600 13px system-ui';
+  ctx.fillText(m.name, 48, row.y0+16);
+  ctx.font='12px system-ui'; ctx.fillStyle='#5B6B95';
+  ctx.fillText(m.note, 48, row.y0+32);
+
+  ctx.textAlign='right';
+  ctx.font='12px system-ui'; ctx.fillStyle='#5B6B95';
+  if(m.v===0) ctx.fillText('听不到声音', W-48, row.y1-10);
+  else if(!arrived) ctx.fillText('声波正在向四面八方扩出去…', W-48, row.y1-10);
+  else ctx.fillText('传到耳朵 · 声音'+loudText(level), W-48, row.y1-10);
+  ctx.textAlign='left';
+}
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,H);
+  for(var i=0;i<rows.length;i++) drawRow(rows[i]);
+  ctx.textAlign='center'; ctx.fillStyle='#8A97B8'; ctx.font='12px system-ui';
+  ctx.fillText('声源在正中 · 一圈一圈的线就是声波，它朝四面八方扩出去', W/2, 14);
+  ctx.textAlign='left';
+  updateReadout();
+}
+
+function updateReadout(){
+  var html='';
+  var keys=(S.view==='compare')?['air','water','solid']:[S.single];
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i], m=MEDIA[k], row=rows[i];
+    var R=m.v*S.t, lv=levelOf(k);
+    var arrived = m.v>0 && row && R>=row.dEar;
+    var live=(S.sound&&S.listen===k)?'<span style="color:#0CA678;font-weight:600"> ●正在响</span>':'';
+    html+='<div style="margin-bottom:6px"><span class="tag" style="background:rgb('+m.rgb+')">'+m.name+'</span> '
+      + (m.v===0?'完全听不到':(arrived?('声音'+loudText(lv)):'正在向四面八方传播中…'))
+      + live
+      + '<br><span style="color:#5F5E5A;font-size:12px">'
+      + (m.v===0?'真空没有物质，声音传不出去':(arrived?'已传到耳朵':'还没传到耳朵'))+'</span></div>';
+  }
+  document.getElementById('out1').innerHTML=html;
+}
+
+document.querySelectorAll('[data-view]').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('[data-view]').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on'); S.view=b.dataset.view; S.t=0;
+    document.getElementById('singlePick').style.display = S.view==='single'?'block':'none';
+    buildParts();
+  };
+});
+document.querySelectorAll('[data-medium]').forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll('[data-medium]').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on'); S.single=b.dataset.medium; S.t=0; buildParts();
+  };
+});
+document.getElementById('btnReplay').onclick=function(){S.t=0};
+document.getElementById('btnRun').onclick=function(){
+  S.running=!S.running; this.textContent=S.running?'暂停':'播放'; this.classList.toggle('on',S.running);
+};
+document.getElementById('btnSlow').onclick=function(){ S.slow=!S.slow; this.classList.toggle('on',S.slow); };
+var btnFsEl=document.getElementById('btnFs'), btnExitFs=document.getElementById('btnExitFs');
+function isFs(){ return !!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement); }
+function syncFs(){
+  var on=isFs();
+  btnFsEl.textContent=on?'退出全屏':'全屏';
+  btnExitFs.style.display=on?'block':'none';
+  setTimeout(fit,80);
+}
+function quitFs(){
+  if(document.exitFullscreen) document.exitFullscreen();
+  else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+  else if(document.msExitFullscreen) document.msExitFullscreen();
+  setTimeout(syncFs,320);
+}
+document.getElementById('btnFs').onclick=function(){
+  if(isFs()){ quitFs(); return; }
+  var tgt=document.documentElement;
+  if(tgt.requestFullscreen){tgt.requestFullscreen();}
+  else if(tgt.webkitRequestFullscreen){tgt.webkitRequestFullscreen();}
+  else if(tgt.msRequestFullscreen){tgt.msRequestFullscreen();}
+  else if(cvs.requestFullscreen){cvs.requestFullscreen();}
+};
+btnExitFs.onclick=function(ev){ if(ev){ev.preventDefault();ev.stopPropagation();} quitFs(); };
+document.addEventListener('fullscreenchange',syncFs);
+document.addEventListener('webkitfullscreenchange',syncFs);
+document.addEventListener('MSFullscreenChange',syncFs);
+cvs.addEventListener('dblclick',function(){ if(isFs()) quitFs(); });
+document.getElementById('chkDots').onchange=function(){S.dots=this.checked};
+document.getElementById('chkArrow').onchange=function(){S.arrow=this.checked};
+
+function updateSoundUI(){
+  document.getElementById('listenBox').style.display = S.sound?'block':'none';
+  document.querySelectorAll('[data-listen]').forEach(function(b){
+    b.classList.toggle('on', S.listen===b.dataset.listen);
+  });
+}
+document.getElementById('btnSound').onclick=function(){
+  if(!S.sound){ audioInit(); S.sound=true; this.textContent='关闭声音'; this.classList.add('on'); }
+  else { S.sound=false; S.listen=null; setVol(0); this.textContent='开启声音'; this.classList.remove('on'); }
+  updateSoundUI();
+};
+document.querySelectorAll('[data-listen]').forEach(function(b){
+  b.onclick=function(){
+    if(!S.sound){ audioInit(); S.sound=true;
+      var bs=document.getElementById('btnSound'); bs.textContent='关闭声音'; bs.classList.add('on'); }
+    var k=b.dataset.listen;
+    S.listen=(S.listen===k)?null:k;
+    updateSoundUI();
+  };
+});
+document.getElementById('chkBoost').onchange=function(){ S.boost=this.checked; };
+
+document.getElementById('btnLog').onclick=function(){
+  var tb=document.getElementById('logBody');
+  var keys=(S.view==='compare')?['air','water','solid']:[S.single];
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i], m=MEDIA[k], row=rows[i];
+    var arrived = m.v>0 && row && m.v*S.t>=row.dEar;
+    var lv = arrived? levelOf(k) : 0;
+    var r=tb.insertRow();
+    r.innerHTML='<td>'+m.name+'</td><td>'+(lv<=0.5?'听不到':'能听到')+'</td><td>'+(lv<=0.5?'完全听不到':loudText(lv))+'</td>';
+  }
+};
+document.getElementById('btnClear').onclick=function(){document.getElementById('logBody').innerHTML=''};
+
+var lastTs=0;
+function loop(ts){
+  if(!lastTs) lastTs=ts;
+  var dt=(ts-lastTs)/1000; lastTs=ts;
+  if(dt>0.1) dt=0.1;
+  if(S.running) S.t += dt*(S.slow?0.35:1);
+  draw();
+  audioTick();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',fit);
+updateSoundUI();
+fit();
+requestAnimationFrame(loop);
+})();
+</script>
+</body></html>
